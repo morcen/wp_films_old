@@ -17,16 +17,40 @@ function unite_enqueue_styles()
 }
 
 
-add_action( 'init', 'create_custom_post_type' );
-function create_custom_post_type() {
-    register_post_type( 'film',
-        array(
-            'labels' => array(
-                'name' => __( 'Films' ),
-                'singular_name' => __( 'Film' )
-            ),
+add_action('init', 'create_custom_post_type');
+function create_custom_post_type()
+{
+    register_post_type('film',
+        [
+            'labels' => [
+                'name' => __('Films'),
+                'singular_name' => __('Film'),
+            ],
             'public' => true,
             'has_archive' => true,
-        )
+        ]
     );
+}
+
+add_action('init', 'create_film_taxonomies');
+function create_film_taxonomies()
+{
+    $taxonomies = ['genre', 'country', 'year', 'actors'];
+
+    foreach ($taxonomies as $taxonomy) {
+        register_taxonomy(
+            sprintf('film_%s', $taxonomy),
+            'film',
+            [
+                'labels' => [
+                    'name' => ucfirst($taxonomy),
+                    'add_new_item' => 'Add New Film ' . ucfirst($taxonomy),
+                    'new_item_name' => 'New Film Type ' . ucfirst($taxonomy),
+                ],
+                'show_ui' => true,
+                'show_tagcloud' => false,
+                'hierarchical' => true,
+            ]
+        );
+    }
 }
