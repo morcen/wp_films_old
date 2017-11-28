@@ -15,3 +15,18 @@ function unite_enqueue_styles()
         wp_get_theme()->get('Version')
     );
 }
+
+
+add_action( 'init', 'create_custom_post_type' );
+function create_custom_post_type() {
+    register_post_type( 'film',
+        array(
+            'labels' => array(
+                'name' => __( 'Films' ),
+                'singular_name' => __( 'Film' )
+            ),
+            'public' => true,
+            'has_archive' => true,
+        )
+    );
+}
